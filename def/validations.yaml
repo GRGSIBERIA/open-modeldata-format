@@ -1,0 +1,5 @@
+validations:
+  validates_of:
+    - name: unique
+    - name: not_null
+    - name: not_zero

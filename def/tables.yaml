@@ -1,11 +1,11 @@
 ### テーブル定義
 tables:
   - name: vertex_position
+    brief: 頂点座標
     columns:
       - name: id
         type: integer
-        unique: true
-        primary_key: true
+        validates_of: unique
       - name: x
         type: float
       - name: y
@@ -13,11 +13,11 @@ tables:
       - name: z
         type: float
   - name: normal
+    brief: 法線方向
     columns:
       - name: id
         type: integer
-        unique: true
-        primary_key: true
+        validates_of: unique
       - name: x
         type: float
       - name: y
@@ -25,101 +25,209 @@ tables:
       - name: z
         type: float
   - name: uv_map
+    brief: UVグループ
     columns:
       - name: id
         type: integer
-        unique: true
-        primary_key: true
+        validates_of: unique
       - name: name
         type: string
+        validates_of: not_null
   - name: uv
+    brief: UV座標
     columns:
       - name: id
         type: integer
-        unique: true
-        primary_key: true
+        validates_of: unique
       - name: u
         type: float
       - name: v
         type: float
   - name: vertex_list
+    brief: 頂点リスト
     columns:
       - name: id
         type: integer
-        primary_key: true
-        unique: true
+        validates_of: unique
       - name: vertex1
         type: integer
-        foregin_table: vertex_position
-        foregin_name: id
+        foreign_key: vertex_position
+        validates_of: not_null
       - name: vertex2
         type: integer
-        foregin_table: vertex_position
-        foregin_name: id
+        foreign_key: vertex_position
+        validates_of: not_null
       - name: vertex3
         type: integer
-        foregin_table: vertex_position
-        foregin_name: id
+        foreign_key: vertex_position
+        validates_of: not_null
   - name: uv_list
+    brief: UVリスト
     columns:
       - name: id
         type: integer
-        primary_key: true
-        unique: true
+        validates_of: unique
       - name: uv1
         type: integer
-        foregin_table: uv
-        foregin_name: id
+        foreign_key: uv
+        validates_of: not_null
       - name: uv2
         type: integer
-        foregin_table: uv
-        foregin_name: id
+        foreign_key: uv
+        validates_of: not_null
       - name: uv3
         type: integer
-        foregin_table: uv
-        foregin_name: id
+        foreign_key: uv
+        validates_of: not_null
   - name: normal_list
+    brief: 法線リスト
     columns:
       - name: id
         type: integer
-        primary_key: true
-        unique: true
+        validates_of: unique
       - name: normal1
         type: integer
-        foregin_table: normal
-        foregin_name: id
+        foreign_key: normal
+        validates_of: not_null
       - name: normal2
         type: integer
-        foregin_table: normal
-        foregin_name: id
+        foreign_key: normal
+        validates_of: not_null
       - name: normal3
         type: integer
-        foregin_table: normal
-        foregin_name: id
+        foreign_key: normal
+        validates_of: not_null
   - name: face
+    brief: 三角形の面
     columns:
       - name: id
         type: integer
-        primary_key: true
-        unique: true
+        validates_of: unique
       - name: vertex_list_id
         type: integer
-        foregin_table: vertex_list
-        foregin_name: id
+        foreign_key: vertex_list
+        validates_of: not_null
       - name: uv_list_id
         type: integer
-        foregin_table: uv_list
-        foregin_name: id
+        foreign_key: uv_list
+        validates_of: not_null
       - name: normal_list_id
         type: integer
-        foregin_table: normal_list
-        foregin_name: id
-  - name: bone_position
+        foreign_key: normal_list
+        validates_of: not_null
+  - name: base_color
+    brief: 基本色
     columns:
       - name: id
         type: integer
-        primary_key: true
-        unique: true
+        validates_of: unique
+      - name: r
+        type: float
+      - name: g
+        type: float
+      - name: b
+        type: float
+  - name: specular_color
+    brief: 反射色
+    columns:
+      - name: id
+        type: integer
+        validates_of: unique
+      - name: r
+        type: float
+      - name: g
+        type: float
+      - name: b
+        type: float
+      - name: specularity
+        type: float
+  - name: ambient_color
+    brief: 環境色
+    columns:
+      - name: id
+        type: integer
+        validates_of: unique
+      - name: r
+        type: float
+      - name: g
+        type: float
+      - name: b
+        type: float
+  - name: reflection
+    brief: 鏡面反射
+    columns:
+      - name: id
+        type: integer
+        validates_of: unique
+      - name: r
+        type: float
+      - name: g
+        type: float
+      - name: b
+        type: float
+      - name: reflectivity
+        type: float
+  - name: texture
+    brief: テクスチャ
+    columns:
+      - name: id
+        type: integer
+        validates_of: unique
+      - name: name
+        type: string
+        validates_of: not_null
+      - name: path
+        type: string
+        validates_of: not_null
+  - name: reflection_texture
+    brief: 鏡面反射用のテクスチャ
+    columns:
+      - name: id
+        type: integer
+        validates_of: unique
+      - name: name
+        type: string
+        validates_of: not_null
+      - name: path
+        type: string
+        validates_of: not_null
+      - name: type
+        type: enum
+        enum:
+          - Sphere
+          - Box
+          - Panorama
+  - name: material
+    brief: マテリアル
+    columns:
+      - name: id
+        type: integer
+        validates_of: unique
+      - name: base_color_id
+        type: integer
+        foreign_key: base_color
+        validates_of: not_null
+      - name: specular_color_id
+        type: integer
+        foreign_key: specular_color
+      - name: ambient_color_id
+        type: integer
+        foreign_key: ambient_color
+      - name: reflection_id
+        type: integer
+        foreign_key: reflection
+      - name: texture_id
+        type: integer
+        foreign_key: texture
+      - name: reflection_texture_id
+        type: integer
+        foreign_key: reflection_texture
+  - name: bone_position
+    brief: ボーン位置
+    columns:
+      - name: id
+        type: integer
+        validates_of: unique
       - name: x
         type: float
       - name: y
@@ -127,22 +235,22 @@ tables:
       - name: z
         type: float
   - name: bone
+    brief: ボーンの構成要素
     columns:
       - name: id
         type: integer
-        primary_key: true
-        unique: true
+        validates_of: unique
       - name: name
         type: string
-        unique: true
+        validates_of: unique
+        validates_of: not_null
       - name: parent_bone_id
         type: integer
-        foregin_table: bone
-        foregin_name: id
+        foreign_key: bone
       - name: position_id
         type: integer
-        foregin_table: bone_position
-        foregin_name: id
+        foreign_key: bone_position
+        validates_of: not_null
       - name: visible
         type: boolean
       - name: enable_rotate
@@ -152,18 +260,141 @@ tables:
       - name: enable_scale
         type: boolean
   - name: influence
+    brief: 頂点に対するボーンの影響度
     columns:
       - name: id
         type: integer
-        primary_key: true
-        unique: true
+        validates_of: unique
       - name: bone_id
         type: integer
-        foregin_table: bone
-        foregin_name: id
+        foreign_key: bone
+        validates_of: not_null
       - name: vertex_id
         type: integer
-        foregin_table: bone
-        foregin_name: id
+        foreign_key: bone
+        validates_of: not_null
       - name: value
         type: float
+  - name: expression_category
+    brief: 表情のカテゴリ
+    columns:
+      - name: id
+        type: integer
+        validates_of: unique
+      - name: name
+        type: string
+        validates_of: not_null
+  - name: expression
+    brief: 表情
+    columns:
+      - name: id
+        type: integer
+        validates_of: unique
+      - name: name
+        type: string
+        validates_of: not_null
+      - name: category_id
+        type: integer
+        foreign_key: expression_category
+  - name: expression_offset
+    brief: 表情のオフセット位置
+    columns:
+      - name: id
+        type: integer
+        validates_of: unique
+      - name: expression_id
+        type: integer
+        foreign_key: expression
+        validates_of: not_null
+      - name: vertex_id
+        type: integer
+        foreign_key: vertex_position
+        validates_of: not_null
+      - name: x
+        type: float
+      - name: y
+        type: float
+      - name: z
+        type: float
+  - name: constraint
+    brief: ボーンの拘束
+    columns:
+      - name: id
+        type: integer
+        validates_of: unique
+      - name: controller_id
+        note: 操作するボーンのID．
+        type: integer
+        foreign_key: bone
+        validates_of: not_null
+      - name: target_id
+        note: 操作されるボーンのID．
+        type: integer
+        foreign_key: bone
+        validates_of: not_null
+      - name: constraint_type
+        type: enum
+        enum:
+          - Orient
+          - Point
+          - Scale
+          - Parent
+          - Aim
+      - name: factor
+        type: float
+  - name: limit
+    brief: ボーンの制限
+    columns:
+      - name: id
+        type: integer
+        validates_of: unique
+      - name: bone_id
+        type: integer
+        foreign_key: bone
+        validates_of: not_null
+      - name: limit_type
+        type: enum
+        enum:
+          - Rotate
+          - Translate
+          - Scale
+      - name: axis
+        type: enum
+        enum:
+          - X
+          - Y
+          - Z
+      - name: min
+        type: float
+      - name: max
+        type: float
+  - name: ik
+    brief: IK情報
+    note: |-
+      駆動方式は回転プレーンソルバ(Maya)．
+      極ベクトルコントローラは，ターゲットからエフェクタまでの中間位置で自動生成する．
+    columns:
+      - name: id
+        type: integer
+        validates_of: unique
+      - name: target_bone_id
+        note: 根本となるボーンのID．
+        type: integer
+        foreign_key: bone
+        validates_of: not_null
+      - name: controller_bone_id
+        note: 操作するボーンのID．
+        type: integer
+        validates_of: not_null
+      - name: iterations
+        note: |-
+          IKの再帰演算回数．
+          値に達するとIKの計算を打ち切る．
+        type: integer
+        default: 50
+      - name: tolerance
+        note: |-
+          値はエフェクタからIKまでの距離．
+          距離がtolerance以下になった場合，IKの計算を打ち切る．
+        type: float
+        default: 0.0001
