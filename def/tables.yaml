@@ -5,7 +5,7 @@ tables:
     columns:
       - name: id
         type: integer
-        validates_of: unique
+        primary_key: true
       - name: x
         type: float
       - name: y
@@ -17,7 +17,7 @@ tables:
     columns:
       - name: id
         type: integer
-        validates_of: unique
+        primary_key: true
       - name: x
         type: float
       - name: y
@@ -29,7 +29,7 @@ tables:
     columns:
       - name: id
         type: integer
-        validates_of: unique
+        primary_key: true
       - name: name
         type: string
         validates_of: not_null
@@ -38,7 +38,7 @@ tables:
     columns:
       - name: id
         type: integer
-        validates_of: unique
+        primary_key: true
       - name: u
         type: float
       - name: v
@@ -48,7 +48,7 @@ tables:
     columns:
       - name: id
         type: integer
-        validates_of: unique
+        primary_key: true
       - name: vertex1
         type: integer
         foreign_key: vertex_position
@@ -66,7 +66,7 @@ tables:
     columns:
       - name: id
         type: integer
-        validates_of: unique
+        primary_key: true
       - name: uv1
         type: integer
         foreign_key: uv
@@ -84,7 +84,7 @@ tables:
     columns:
       - name: id
         type: integer
-        validates_of: unique
+        primary_key: true
       - name: normal1
         type: integer
         foreign_key: normal
@@ -102,7 +102,7 @@ tables:
     columns:
       - name: id
         type: integer
-        validates_of: unique
+        primary_key: true
       - name: vertex_list_id
         type: integer
         foreign_key: vertex_list
@@ -120,7 +120,7 @@ tables:
     columns:
       - name: id
         type: integer
-        validates_of: unique
+        primary_key: true
       - name: r
         type: float
       - name: g
@@ -132,7 +132,7 @@ tables:
     columns:
       - name: id
         type: integer
-        validates_of: unique
+        primary_key: true
       - name: r
         type: float
       - name: g
@@ -146,7 +146,7 @@ tables:
     columns:
       - name: id
         type: integer
-        validates_of: unique
+        primary_key: true
       - name: r
         type: float
       - name: g
@@ -158,7 +158,7 @@ tables:
     columns:
       - name: id
         type: integer
-        validates_of: unique
+        primary_key: true
       - name: r
         type: float
       - name: g
@@ -172,7 +172,7 @@ tables:
     columns:
       - name: id
         type: integer
-        validates_of: unique
+        primary_key: true
       - name: name
         type: string
         validates_of: not_null
@@ -184,7 +184,7 @@ tables:
     columns:
       - name: id
         type: integer
-        validates_of: unique
+        primary_key: true
       - name: name
         type: string
         validates_of: not_null
@@ -202,7 +202,7 @@ tables:
     columns:
       - name: id
         type: integer
-        validates_of: unique
+        primary_key: true
       - name: base_color_id
         type: integer
         foreign_key: base_color
@@ -227,7 +227,7 @@ tables:
     columns:
       - name: id
         type: integer
-        validates_of: unique
+        primary_key: true
       - name: x
         type: float
       - name: y
@@ -239,7 +239,7 @@ tables:
     columns:
       - name: id
         type: integer
-        validates_of: unique
+        primary_key: true
       - name: name
         type: string
         validates_of: unique
@@ -264,7 +264,7 @@ tables:
     columns:
       - name: id
         type: integer
-        validates_of: unique
+        primary_key: true
       - name: bone_id
         type: integer
         foreign_key: bone
@@ -280,7 +280,7 @@ tables:
     columns:
       - name: id
         type: integer
-        validates_of: unique
+        primary_key: true
       - name: name
         type: string
         validates_of: not_null
@@ -289,7 +289,7 @@ tables:
     columns:
       - name: id
         type: integer
-        validates_of: unique
+        primary_key: true
       - name: name
         type: string
         validates_of: not_null
@@ -301,7 +301,7 @@ tables:
     columns:
       - name: id
         type: integer
-        validates_of: unique
+        primary_key: true
       - name: expression_id
         type: integer
         foreign_key: expression
@@ -321,7 +321,7 @@ tables:
     columns:
       - name: id
         type: integer
-        validates_of: unique
+        primary_key: true
       - name: controller_id
         note: 操作するボーンのID．
         type: integer
@@ -347,7 +347,7 @@ tables:
     columns:
       - name: id
         type: integer
-        validates_of: unique
+        primary_key: true
       - name: bone_id
         type: integer
         foreign_key: bone
@@ -376,7 +376,7 @@ tables:
     columns:
       - name: id
         type: integer
-        validates_of: unique
+        primary_key: true
       - name: target_bone_id
         note: 根本となるボーンのID．
         type: integer
@@ -398,3 +398,46 @@ tables:
           距離がtolerance以下になった場合，IKの計算を打ち切る．
         type: float
         default: 0.0001
+  - name: rig
+    brief: リグ
+    note: |-
+      ボーンの表示を拡張するためのもの．
+      リグとして拡張したいボーンのIDを指定する．
+    columns:
+      - name: id
+        type: integer
+        primary_key: true
+      - name: control_bone_id
+        foreign_key: bone
+        validates_of: not_null
+  - name: rig_gui_point
+    brief: リグの点
+    note: |-
+      GUIは点と点からなる直線で表現される．
+    columns:
+      - name: id
+        type: integer
+        primary_key: true
+      - name: x
+        type: float
+      - name: y
+        type: float
+      - name: z
+        type: float
+  - name: rig_gui_line
+    brief: リグの線
+    note: |-
+      点と点をつないで直線を表現する．
+    columns:
+      - name: id
+        type: integer
+        primary_key: true
+      - name: rig_id
+        type: integer
+        foreign_key: rig
+      - name: start_point_id
+        type: integer
+        foreign_key: rig_gui_point
+      - name: end_ponit_id
+        type: integer
+        foreign_key: rig_gui_point
