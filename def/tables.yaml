@@ -1,0 +1,169 @@
+### テーブル定義
+tables:
+  - name: vertex_position
+    columns:
+      - name: id
+        type: integer
+        unique: true
+        primary_key: true
+      - name: x
+        type: float
+      - name: y
+        type: float
+      - name: z
+        type: float
+  - name: normal
+    columns:
+      - name: id
+        type: integer
+        unique: true
+        primary_key: true
+      - name: x
+        type: float
+      - name: y
+        type: float
+      - name: z
+        type: float
+  - name: uv_map
+    columns:
+      - name: id
+        type: integer
+        unique: true
+        primary_key: true
+      - name: name
+        type: string
+  - name: uv
+    columns:
+      - name: id
+        type: integer
+        unique: true
+        primary_key: true
+      - name: u
+        type: float
+      - name: v
+        type: float
+  - name: vertex_list
+    columns:
+      - name: id
+        type: integer
+        primary_key: true
+        unique: true
+      - name: vertex1
+        type: integer
+        foregin_table: vertex_position
+        foregin_name: id
+      - name: vertex2
+        type: integer
+        foregin_table: vertex_position
+        foregin_name: id
+      - name: vertex3
+        type: integer
+        foregin_table: vertex_position
+        foregin_name: id
+  - name: uv_list
+    columns:
+      - name: id
+        type: integer
+        primary_key: true
+        unique: true
+      - name: uv1
+        type: integer
+        foregin_table: uv
+        foregin_name: id
+      - name: uv2
+        type: integer
+        foregin_table: uv
+        foregin_name: id
+      - name: uv3
+        type: integer
+        foregin_table: uv
+        foregin_name: id
+  - name: normal_list
+    columns:
+      - name: id
+        type: integer
+        primary_key: true
+        unique: true
+      - name: normal1
+        type: integer
+        foregin_table: normal
+        foregin_name: id
+      - name: normal2
+        type: integer
+        foregin_table: normal
+        foregin_name: id
+      - name: normal3
+        type: integer
+        foregin_table: normal
+        foregin_name: id
+  - name: face
+    columns:
+      - name: id
+        type: integer
+        primary_key: true
+        unique: true
+      - name: vertex_list_id
+        type: integer
+        foregin_table: vertex_list
+        foregin_name: id
+      - name: uv_list_id
+        type: integer
+        foregin_table: uv_list
+        foregin_name: id
+      - name: normal_list_id
+        type: integer
+        foregin_table: normal_list
+        foregin_name: id
+  - name: bone_position
+    columns:
+      - name: id
+        type: integer
+        primary_key: true
+        unique: true
+      - name: x
+        type: float
+      - name: y
+        type: float
+      - name: z
+        type: float
+  - name: bone
+    columns:
+      - name: id
+        type: integer
+        primary_key: true
+        unique: true
+      - name: name
+        type: string
+        unique: true
+      - name: parent_bone_id
+        type: integer
+        foregin_table: bone
+        foregin_name: id
+      - name: position_id
+        type: integer
+        foregin_table: bone_position
+        foregin_name: id
+      - name: visible
+        type: boolean
+      - name: enable_rotate
+        type: boolean
+      - name: enable_translate
+        type: boolean
+      - name: enable_scale
+        type: boolean
+  - name: influence
+    columns:
+      - name: id
+        type: integer
+        primary_key: true
+        unique: true
+      - name: bone_id
+        type: integer
+        foregin_table: bone
+        foregin_name: id
+      - name: vertex_id
+        type: integer
+        foregin_table: bone
+        foregin_name: id
+      - name: value
+        type: float
